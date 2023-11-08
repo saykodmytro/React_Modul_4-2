@@ -8,9 +8,8 @@ export const Product = ({
   price,
   discount,
   hendleDeleteProduct,
-  openModal,
 }) => {
-  const { dayOfTheMonth } = useContext(ModalContext);
+  const { dayOfTheMonth, openModal } = useContext(ModalContext);
 
   const productBg = discount ? 'red' : 'green';
 
@@ -21,7 +20,7 @@ export const Product = ({
 
   return (
     <div className={css.product} style={productStyles}>
-      <b className="title-day">dayOfTheMonth: {dayOfTheMonth}</b>
+      <b className="title-day">Day Of the Month: {dayOfTheMonth}</b>
       <img
         className={css.productImg}
         src="https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?dpr=2&h=480&w=640"

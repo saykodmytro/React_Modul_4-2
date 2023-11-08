@@ -1,5 +1,6 @@
 import css from './Modal.module.css';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { ModalContext } from 'context/ModalContext';
 
 //            ******************** useState **********************
 
@@ -18,21 +19,16 @@ import { useEffect, useState } from 'react';
 
 // Якщо не передати масив залежностей, ефект виконуватиметься на кожному рендері компонента. Саме завдяки масиву залежностей ми можемо імітувати методи життєвого циклу.
 
-const Modal = ({ modalData, closeModal }) => {
-  // state = {
-  //   counter: 1,
-  // };
+const Modal = () => {
+  const { modalData, closeModal } = useContext(ModalContext);
 
+  const inputRef = useRef();
   const [counter, setCounter] = useState(1);
 
-  const handleIncrementProduct = () => {
-    setCounter(prevState => prevState + 1);
-  };
-
   useEffect(() => {
-    console.log('***** useEffect *****');
+    if (!inputRef.current) return;
+    inputRef.current.focus();
 
-    //  ************    Emulation componentDidMount(){} ************
     const handleKeyDown = evt => {
       if (evt.code === 'Escape') {
         closeModal();
@@ -49,14 +45,6 @@ const Modal = ({ modalData, closeModal }) => {
       document.body.style.overflow = 'auto';
     };
   }, [closeModal]);
-  //  ************   End Emulation componentWillUnmount(){} ************
-
-  //  ************    Emulation componentDidUpdate(){} ************
-
-  useEffect(() => {
-    console.log('Product counter: ' + counter);
-  }, [counter]);
-  //  ************   End Emulation componentDidUpdate(){} ************
 
   const handleOverlayClick = evt => {
     if (evt.target === evt.currentTarget) {
@@ -64,7 +52,12 @@ const Modal = ({ modalData, closeModal }) => {
     }
   };
 
-  console.log('Test Dima');
+  const handleButtonClick = () => {
+    console.log(inputRef.current);
+    // const inputWidth = getComputedStyle(inputRef.current).width;
+    // console.log('inputWidth: ', inputWidth);
+    inputRef.current.focus();
+  };
 
   return (
     <div onClick={handleOverlayClick} className={css.modalContainer}>
@@ -78,10 +71,8 @@ const Modal = ({ modalData, closeModal }) => {
           <p>Discount: {modalData.discount}$</p>
           <p>Price: {modalData.price}$</p>
         </div>
-        <button onClick={handleIncrementProduct}>
-          Add Product:
-          {counter}
-        </button>
+        <input ref={inputRef} type="text" />
+        <button onClick={handleButtonClick}>Select input</button>
       </div>
     </div>
   );

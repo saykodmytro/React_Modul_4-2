@@ -1,5 +1,5 @@
 import { TitleComponent } from './Title/Title';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Product } from './Product/Product';
 import { productsData } from 'Data/productsData';
 import css from './App.module.css';
@@ -7,6 +7,7 @@ import Section from './Section/Section';
 import Modal from './Modal/Modal';
 import ProductForm from './ProductForm/ProductForm';
 import { nanoid } from 'nanoid';
+import { ModalContext } from 'context/ModalContext';
 
 export const App = () => {
   const [products, setProducts] = useState(() => {
@@ -15,11 +16,10 @@ export const App = () => {
     return parsedProducts;
   });
 
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [modalData, setModalData] = useState(null);
+  const { isOpenModal } = useContext(ModalContext);
 
   useEffect(() => {
-    const stringifiedProducts = JSON.stringify(this.state.products);
+    const stringifiedProducts = JSON.stringify(products);
     localStorage.setItem('products', stringifiedProducts);
   }, [products]);
 
@@ -49,19 +49,7 @@ export const App = () => {
     setProducts(products.filter(product => product.id !== productId));
   };
 
-  const openModal = someDataToModal => {
-    setIsOpenModal(true);
-    setModalData(someDataToModal);
-  };
-
-  const closeModal = () => {
-    setIsOpenModal(false);
-    setModalData(null);
-  };
-
-  const sortedProducts = [...this.state.products].sort(
-    (a, b) => a.price - b.price
-  );
+  const sortedProducts = [...products].sort((a, b) => a.price - b.price);
   return (
     <div>
       <Section>
@@ -82,14 +70,13 @@ export const App = () => {
                 price={price}
                 discount={discount}
                 hendleDeleteProduct={hendleDeleteProduct}
-                openModal={openModal}
               />
             );
           })}
         </div>
       </Section>
 
-      {isOpenModal && <Modal closeModal={closeModal} modalData={modalData} />}
+      {isOpenModal && <Modal />}
     </div>
   );
 };
