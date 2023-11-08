@@ -24,6 +24,7 @@ const Modal = () => {
 
   const inputRef = useRef();
   const [counter, setCounter] = useState(1);
+  const firstRenderRef = useRef(true);
 
   useEffect(() => {
     if (!inputRef.current) return;
@@ -45,6 +46,16 @@ const Modal = () => {
       document.body.style.overflow = 'auto';
     };
   }, [closeModal]);
+
+  useEffect(() => {
+    if (firstRenderRef.current === false) {
+      console.log('counter changed', counter);
+    }
+
+    return () => {
+      firstRenderRef.current = false;
+    };
+  }, [counter]);
 
   const handleOverlayClick = evt => {
     if (evt.target === evt.currentTarget) {
@@ -73,6 +84,9 @@ const Modal = () => {
         </div>
         <input ref={inputRef} type="text" />
         <button onClick={handleButtonClick}>Select input</button>
+        <button onClick={() => setCounter(prev => prev + 1)}>
+          Product count: {counter}
+        </button>
       </div>
     </div>
   );
