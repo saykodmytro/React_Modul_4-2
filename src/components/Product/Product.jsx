@@ -16,7 +16,6 @@ export const Product = ({
   const productStyles = {
     backgroundColor: productBg,
   };
-  console.log('css :', css);
 
   return (
     <div className={css.product} style={productStyles}>
