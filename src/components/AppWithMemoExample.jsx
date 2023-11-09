@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
 const AppWithMemoExample = () => {
+  // eslint-disable-next-line
   const [planets, setPlanets] = useState(['Earth', 'Mars', 'Jupiter', 'Venus']);
   const [query, setQuery] = useState('');
   const [counter, setCounter] = useState(0);
