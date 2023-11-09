@@ -25,6 +25,7 @@ const Modal = () => {
   const inputRef = useRef();
   const [counter, setCounter] = useState(1);
   const firstRenderRef = useRef(true);
+  console.log('firstRenderRef: ', firstRenderRef);
 
   useEffect(() => {
     if (!inputRef.current) return;
